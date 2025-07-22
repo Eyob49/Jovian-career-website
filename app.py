@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask import abort # You might need to import abort if not already
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -77,6 +78,21 @@ def list_jobs_api():
         print(f"Error fetching jobs for API: {e}")
         return jsonify({"error": "Failed to retrieve job data"}), 500 # Return an error for API
     return jsonify(jobs_data)
+    
+
+
+@app.route('/job/<id>')
+def job_detail(id):
+    # Fetch the job from the database using its ID
+    # db.session.get() directly fetches by primary key
+    job = db.session.get(Job, id)
+
+    # Now, explicitly check if the job was found, and if not, abort with a 404
+    if job is None:
+        abort(404) # This will raise an HTTP 404 Not Found error
+
+    return render_template('job.html', job=job.to_dict())
+
 
 # --- Run the app ---
 if __name__ == '__main__':

@@ -54,7 +54,7 @@
                             <li>{{ requirement.strip() }}</li>
                         {% endfor %}
                     </ul>
-                    <a class="btn btn-outline-primary">Apply</a>
+                    <a href="{{ url_for('job_detail', id=job.id) }}" class="btn btn-outline-primary">Apply</a>
                 </div>
                 {% endfor %}
             **{% else %}** {# OTHERWISE, show the "No job openings" message #}
